@@ -30,7 +30,7 @@ pip install requests serverchan-sdk NJUlogin
 
 ### 2. 配置脚本
 
-打开 `fetch.py`，找到顶部的配置区域，填入你的个人信息：
+打开 `watcher.py`，找到顶部的配置区域，填入你的个人信息：
 
 **Python**
 
@@ -49,7 +49,7 @@ SENDKEY = "你的Server酱Key"  # sct.ftqq.com 和 sc3.ft07.com 都可以用
 **Bash**
 
 ```
-python fetch.py
+python watcher.py
 ```
 
 或者：
@@ -57,7 +57,7 @@ python fetch.py
 **Bash**
 
 ```
-nohup python3 fetch.py > grade.log 2>&1 &
+nohup python3 watcher.py > grade.log 2>&1 &
 ```
 
 ## ⚙️ 高级配置
