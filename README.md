@@ -7,7 +7,7 @@
 * **自动登录**：集成 `NJUlogin`，支持自动处理登录验证码。
 * **增量推送**：启动时自动记录已有课程，仅当检测到新的课程号 (KCH) 时才发送通知，避免重复打扰。
 * **即时通知**：支持 ServerChan 推送，第一时间获取成绩动态。
-* **防掉线机制**：内置 Session 保持和自动重试逻辑。如果 Cookie 失效或网络波动，脚本会自动尝试重新登录。
+* **防掉线机制**：内置 Session 保持和自动重试逻辑。成绩应用 Cookie 失效时，脚本会先尝试通过仍有效的 eHall/统一身份认证 SSO 会话刷新应用登录态；只有 SSO 也失效时，才按冷却策略重新密码登录。
 * **随机轮询**：采用随机间隔（10s - 120s）进行查询，降低被服务器风控的风险。
 
 ## 🛠️ 依赖环境
@@ -72,6 +72,22 @@ nohup python3 watcher.py > grade.log 2>&1 &
 # 默认在 10秒 到 2分钟 之间随机等待
 time.sleep(random.uniform(10, 120))
 ```
+
+### 修改登录恢复策略
+
+脚本会把登录态 Cookie 保存到 `nju_grade_cookies.txt`，程序重启后会先尝试复用 Cookie。这个文件等同于登录凭据，不要提交到 Git 或分享给他人。
+
+默认配置：
+
+**Python**
+
+```
+PASSWORD_LOGIN_COOLDOWN_SECONDS = 60 * 60
+SESSION_REFRESH_RETRIES = 3
+SESSION_REFRESH_WAIT_SECONDS = 30
+```
+
+其中 `PASSWORD_LOGIN_COOLDOWN_SECONDS` 用来限制统一身份认证密码登录频率，避免在成绩应用会话短期失效时反复提交账号密码。
 
 ### 修改推送格式
 
